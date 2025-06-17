@@ -1,10 +1,24 @@
 'use strict';
+
 const express     = require('express');
 const bodyParser  = require('body-parser');
 const fccTesting  = require('./freeCodeCamp/fcctesting.js');
 const app         = express();
 fccTesting(app);
+const bcrypt = require('bcrypt');
 const saltRounds = 12;
+
+app.post('/register', (req, res) => {
+  const plainPassword = req.body.password;
+
+  bcrypt.hash(plainPassword, saltRounds, (err, hash) => {
+    if (err) return next(err);
+    
+    // Normally you'd store the hash in your DB here
+    // For the challenge, just return success
+    res.send("Hash generated");
+  });
+});
 const myPlaintextPassword = 'sUperpassw0rd!';
 const someOtherPlaintextPassword = 'pass123';
 
